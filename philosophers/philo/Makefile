@@ -6,12 +6,14 @@
 #    By: ehedeman <ehedeman@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/02 11:16:23 by ehedeman          #+#    #+#              #
-#    Updated: 2024/04/02 12:09:53 by ehedeman         ###   ########.fr        #
+#    Updated: 2024/04/03 13:25:43 by ehedeman         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
-SRC = input_processing.c
+SRC = input_processing.c			\
+		input_processing_utils.c	\
+		atoi.c
 INCL = philosophers.h
 
 OBJS = $(SRC:.c=.o)
@@ -40,13 +42,13 @@ clean:
 	@printf "$(RED)Removed object Files\n$(NC)"
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 	@printf "$(RED)Removed binary\n$(NC)"
 
 re: fclean all
-
+	@printf "$(GREEN)Created binary.\n$(NC)"
 e: re
-	./$(NAME) 1 2 3 4 5
+	./$(NAME) 3 2 2 2 2
 
 leaks:
 	valgrind --leak-check=full \

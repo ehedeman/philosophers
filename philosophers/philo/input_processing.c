@@ -6,35 +6,64 @@
 /*   By: ehedeman <ehedeman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 11:34:16 by ehedeman          #+#    #+#             */
-/*   Updated: 2024/04/02 12:09:46 by ehedeman         ###   ########.fr       */
+/*   Updated: 2024/04/03 13:23:42 by ehedeman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	*routine()
+void	*ft_philo(void	*args)
 {
-	printf("test\n");
-	sleep(2);
-	printf("test aber anders\n");
+	t_philo	*philo;
+	int		i;
+
+	i = 0;
+	philo = args;
+	while (i < philo->number)
+	{
+		printf("Time Passed:%i\n", i);
+		if (philo->forks > 1)
+			sleep(philo->eat);
+		else
+			sleep(philo->sleep);
+		i++;
+	}
+	return (0);
+}
+
+static void	*philos_init(t_philo *philo)
+{
+	int i;
+
+	i = 0;
+	while(i < philo->number)
+	{
+		pthread_create(&philo->t_list[i], NULL, &ft_philo, philo);
+		i++;
+	}
+	i = 0;
+	while (i < philo->number)
+	{
+		pthread_join(philo->t_list[i], NULL);
+		i++;
+	}
 	return (0);
 }
 
 int	main(int argc, char **argv)
 {
-	pthread_t	t1;
-	pthread_t	t2;
-	char		*test;
+	t_philo		philo;
 
 	if (argc != 6)
 	{
-		write(2, "Error.", 7);
+		write(2, "Error: Argument Number\n", 6);
 		return (0);
 	}
-	test = argv[1];
-	pthread_create(&t1, NULL, &routine, NULL);
-	pthread_create(&t2, NULL, &routine, NULL);
-	pthread_join(t1, NULL);
-	pthread_join(t2, NULL);
+	philo = assign_philo(argv);
+	philo.t_list = malloc(sizeof(pthread_t) * philo.number);
+	if (!philo.t_list)
+		return (0);
+	philos_init(&philo);
+	free(philo.t_list);
 	return (0);
 }
