@@ -1,5 +1,9 @@
-Subject Philosophers from the school 42Wolfsburg.
+# Philosophers
+This is a project from 42Wob.
 
-I got 100% on the subject though there were a couple minor things i noticed afterwards.
+The project was completed with a 100% mark, though there were some things i noticed afterwards, such as philosophers dying early despite them not being supposed to.
 
 It works but its not perfect.
+
+The project is compilable through the makefile.
+Subject is included in the repository.
